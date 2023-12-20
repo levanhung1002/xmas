@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>課題０３:Javascriptアニメーション</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // ページがロードされたらinit関数を呼び出す
+        window.onload = init;
+
+        // init関数が呼び出される間隔
+        // 今回は10ミリ秒ごと
+        const INTERVAL = 10;
+
+        // 表示されているページのサイズを取得
+        // widthサイズの取得
+        let wSize = document.documentElement.clientWidth;
+        // heightサイズの取得
+        let hSize = document.documentElement.clientHeight;
+
+        // 看板の設定
+        // setTimeoutのタイマーの設定
+        let timer;
+        // STOP/STARTボタン(以下，看板)のオン/オフ
+        let animating = false;
+        // 看板の画像切り替え
+        let kanban = 'start';
+
+        // サンタのｘ座標の初期位置
+        let x = wSize + 500;
+        // サンタのｙ座標の初期位置
+        let y = 100;
+        // サンタを動かすスイッチ
+        let s_switch = true;
+        // サンタがx座標で進む速さ
+        let x_santa_speed = 1.5;
+
+        // プレゼントを動かすスイッチ
+        let p_switch = true;
+        // プレゼントのｙ座標の初期位置
+        let py = 150;
+        // プレゼントの画像サイズの初期値
+        let wp = 125;
+        // プレゼントの画像サイズの変更の速さ
+        const S_PRESENT_SPEED = 0.2;
+        // プレゼントの回転の初期値
+        let pr = 0;
+        // プレゼントの回転する方向
+        let d = 'left';
+        // プレゼントがｙ座標で進む速さ
+        const Y_PRESENT_SPEED = 1.5;
+
+        // 花火ｙ座標の初期位置
+        let hy = hSize;
+        // 花火が打ちあがっている速さ
+        const Y_HANABI_SPEED = 5;
+        // 花火がfideoutするまでの速さ
+        let fo = 1;
+
+        // けむりの回転の初期値
+        let kr = 0;
+        let krr = 0;
+        // けむりの回転する方向
+        let dd = 'left';
+
+        audio = new Audio('hbdfb.mp3');
+
+
+        // 看板のオン/オフ関数
+        function startstop() {
+            let kanban_start = document.getElementById('start');
+            let kanban_stop = document.getElementById('stop');
+
+            // 看板がstartか？
+            if (kanban === 'start') {
+                kanban = 'stop';
+                kanban_start.style.display = "none";
+                kanban_stop.style.display = "block";
+                audio.pause();
+            } else {
+                kanban = 'start';
+                kanban_stop.style.display = "none";
+                kanban_start.style.display = "block";
+                audio.play();
+            }
+            // アニメーションがTrueか？
+            if (animating) {
+                // アニメーションを動かす
+                init();
+            } else {
+                // アニメーションを停止する
+                clearTimeout(timer);
+            }
+            animating = !animating;
+        }
+
+
+        // アニメーション関数
+        function init() {
+            // ここからサンタゾーン
+            audio.play();
+            let santa = document.getElementById('santa');
+            // 画面の真ん中のｘ座標の取得(切り上げ)
+            let han_wSize = Math.ceil((wSize / 2));
+            santa.style.left = x + "px";
+            santa.style.top = y + "px";
+
+            // サンタのそりに動きをつける
+            if (y > 120) y = 100;
+            // サンタが画面外に行くまでサンタを動かす
+            if (x > -300 && s_switch) {
+                x -= x_santa_speed;
+                y += 0.5;
+            } else {
+                s_switch = false;
+            }
+
+            // ここからプレゼントゾーン
+            let present = document.getElementById('present');
+            let present_size = document.getElementById('present_fall');
+
+            // サンタが画面半分まできたらプレゼントを落とす
+            if (x < (han_wSize + 90000/wSize) && p_switch) {
+
+                present.style.display = "block";
+                py += Y_PRESENT_SPEED;
+                wp -= S_PRESENT_SPEED;
+                present.style.top = py + "px";
+                present_size.style.width = wp + "px";
+
+                // サンタがプレゼントを落としたら加速させる
+                x_santa_speed = 3;
+
+                // プレゼントが回転させる
+                if (pr > 25) {
+                    d = 'right';
+                } else if (pr < -25) {
+                    d = 'left';
+                }
+                if (d === 'left') {
+                    pr += 0.5;
+                } else if (d === 'right') {
+                    pr -= 0.5;
+                }
+
+                present.style.transform = "rotate(" + pr + "deg)";
+            }
+            // プレゼントが画面外に行ったら動かないようにする
+            if (py > hSize - 140) {
+
+                p_switch = false;
+                present.style.display = "none";
+
+                // ここから花火ゾーン
+                let Hanabi_utiage = document.getElementById('hanabi_utiage');
+                Hanabi_utiage.style.display = "block";
+
+                // 画面の3分の1の高さまでくるまで花火を動かす
+                if (hy > hSize / 3) {
+                    hy -= Y_HANABI_SPEED;
+                } else {
+                    Hanabi_utiage.style.display = "none";
+                    let Hanabi = document.getElementById('hanabi');
+                    let text = document.getElementById('text');
+                    Hanabi.style.display = "block";
+                    text.style.display = "block";
+                    Hanabi.style.opacity = fo;
+
+                    // 花火のオパシティを変更する
+                    if (fo > 0) {
+                        fo -= 0.01;
+                    } else {
+                        // 花火が消えたあとのリセット処理
+                        Hanabi.style.display = "none";
+                        text.style.display = "none";
+                        s_switch = true;
+                        p_switch = true;
+                        py = 150;
+                        wp = 125;
+                        fo = 1;
+                        x_santa_speed = 1.5;
+                        // ↓画面サイズが変更されたときのために座標を更新
+                        hy = document.documentElement.clientHeight;
+                        x = document.documentElement.clientWidth;
+                    }
+                }
+                Hanabi_utiage.style.top = hy + "px";
+            }
+            // ここからけむりゾーン
+            let Kemuri = document.getElementById('kemuri');
+            // けむりを回転させる
+            if (kr > 25) {
+                dd = 'right';
+            } else if (kr < -25) {
+                dd = 'left';
+            }
+            if (dd === 'left') {
+                kr += 1;
+                Kemuri.style.transform = "rotate(" + krr + "deg)";
+                krr = 0;
+            } else if (dd === 'right') {
+                kr -= 1;
+                Kemuri.style.transform = "rotate(" + krr + "deg)";
+                krr = 10;
+            }
+            timer = setTimeout("init()", INTERVAL);
+        }
+    </script>
+</head>
+
+<body>
+
+<audio src="hbdfb.mp3" id="linkmp3" class="sembunyi"></audio>
+
+<div class="view">
+    <img id="start" class="button" onclick="startstop();" src="images/kanban_start.png" alt="ストップ，スタートボタン">
+    <img id="stop" class="button" onclick="startstop();" src="images/kanban_stop.png" alt="ストップ，スタートボタン">
+    <img id="santa" src="images/christmas_santa_sori.png" alt="飛んでいるサンタの画像" width="300px" height="auto">
+
+    <div id="present">
+        <img id="present_fall" src="images/otanjoubi_birthday_present_balloon.png" alt="サンタが落としたプレゼントの画像"
+             width="125px" height="auto">
+    </div>
+
+    <img id="hanabi_utiage" src="images/hanabi_utiage.png" alt="打ちあがっている花火" width="50px" height="auto">
+    <img id="hanabi" src="images/hanabi.png" alt="花火の画像">
+    <img id="yama" src="images/yama.png" alt="火山の画像" width="500px" height="auto">
+    <img id="kemuri" src="images/kemuri.png" alt="火山の画像" width="175px" height="auto">
+
+    <h1 id="text" style="display: none">Merry Christmas</h1>
+</div>
+</body>
+</html>
