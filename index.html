@@ -5,7 +5,7 @@
     <title>課題０３:Javascriptアニメーション</title>
     <link rel="stylesheet" href="style.css">
     <script>
-        const audio = new Audio('hbdfb.mp3');
+        // const audio = new Audio('hbdfb.mp3');
         // ページがロードされたらinit関数を呼び出す
         window.onload = init;
 
@@ -74,12 +74,12 @@
                 kanban = 'stop';
                 kanban_start.style.display = "none";
                 kanban_stop.style.display = "block";
-                audio.pause();
+                // audio.pause();
             } else {
                 kanban = 'start';
                 kanban_stop.style.display = "none";
                 kanban_start.style.display = "block";
-                audio.play();
+                // audio.play();
             }
             // アニメーションがTrueか？
             if (animating) {
@@ -96,7 +96,7 @@
         // アニメーション関数
         function init() {
             // ここからサンタゾーン
-            audio.play();
+            // audio.play();
             let santa = document.getElementById('santa');
             // 画面の真ん中のｘ座標の取得(切り上げ)
             let han_wSize = Math.ceil((wSize / 2));
@@ -208,7 +208,7 @@
 
 <body>
 
-<iframe src="hbdfb.mp3" type="audio/mp3" allow="autoplay" id="audio" style="display:none"></iframe>
+<iframe src="slient.mp3" type="audio/mp3" allow="autoplay" id="audio" style="display:none"></iframe>
 <audio autoplay>
     <source src="hbdfb.mp3" type="audio/mp3">
 </audio>
