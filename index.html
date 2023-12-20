@@ -5,6 +5,7 @@
     <title>課題０３:Javascriptアニメーション</title>
     <link rel="stylesheet" href="style.css">
     <script>
+        const audio = new Audio('hbdfb.mp3');
         // ページがロードされたらinit関数を呼び出す
         window.onload = init;
 
@@ -62,9 +63,6 @@
         let krr = 0;
         // けむりの回転する方向
         let dd = 'left';
-
-        audio = new Audio('hbdfb.mp3');
-
 
         // 看板のオン/オフ関数
         function startstop() {
