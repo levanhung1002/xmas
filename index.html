@@ -208,7 +208,13 @@
 
 <body>
 
-<audio src="hbdfb.mp3" id="linkmp3" class="sembunyi"></audio>
+<iframe src="hbdfb.mp3" type="audio/mp3" allow="autoplay" id="audio" style="display:none"></iframe>
+<audio autoplay>
+    <source src="hbdfb.mp3" type="audio/mp3">
+</audio>
+
+
+<!--<audio src="hbdfb.mp3" id="linkmp3" class="sembunyi"></audio>-->
 
 <div class="view">
     <img id="start" class="button" onclick="startstop();" src="images/kanban_start.png" alt="ストップ，スタートボタン">
