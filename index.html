@@ -5,13 +5,13 @@
     <title>課題０３:Javascriptアニメーション</title>
     <link rel="stylesheet" href="style.css">
     <script>
-        // const audio = new Audio('hbdfb.mp3');
+        const audio = new Audio('hbdfb.mp3');
         // ページがロードされたらinit関数を呼び出す
-        window.onload = init;
+        // window.onload = init;
 
         // init関数が呼び出される間隔
         // 今回は10ミリ秒ごと
-        const INTERVAL = 10;
+        const INTERVAL = 30;
 
         // 表示されているページのサイズを取得
         // widthサイズの取得
@@ -64,6 +64,8 @@
         // けむりの回転する方向
         let dd = 'left';
 
+        fungsiAwal = 0;
+
         // 看板のオン/オフ関数
         function startstop() {
             let kanban_start = document.getElementById('start');
@@ -93,6 +95,26 @@
         }
 
 
+        function openGift() {
+            if (fungsiAwal === 0) {
+                audio.play();
+                fungsiAwal = 1;
+                kadoIn.style = "transition:all .8s ease;transform:scale(10);opacity:0";
+                setTimeout(initengahan, 300);
+                setTimeout(init, 500);
+            }
+        }
+
+
+        function initengahan() {
+            kadoIn.style = "display:none";
+            ket.style = "display:none";
+            page1.style = "display:none";
+            page2.style = "transform: scale(1.5);";
+            page2.style = "display:block";
+        }
+
+
         // アニメーション関数
         function init() {
             // ここからサンタゾーン
@@ -118,7 +140,7 @@
             let present_size = document.getElementById('present_fall');
 
             // サンタが画面半分まできたらプレゼントを落とす
-            if (x < (han_wSize + 90000/wSize) && p_switch) {
+            if (x < (han_wSize + 90000 / wSize) && p_switch) {
 
                 present.style.display = "block";
                 py += Y_PRESENT_SPEED;
@@ -207,31 +229,39 @@
 </head>
 
 <body>
-
-<iframe src="slient.mp3" type="audio/mp3" allow="autoplay" id="audio" style="display:none"></iframe>
-<audio autoplay>
-    <source src="hbdfb.mp3" type="audio/mp3">
-</audio>
-
-
 <!--<audio src="hbdfb.mp3" id="linkmp3" class="sembunyi"></audio>-->
 
-<div class="view">
-    <img id="start" class="button" onclick="startstop();" src="images/kanban_start.png" alt="ストップ，スタートボタン">
-    <img id="stop" class="button" onclick="startstop();" src="images/kanban_stop.png" alt="ストップ，スタートボタン">
-    <img id="santa" src="images/christmas_santa_sori.png" alt="飛んでいるサンタの画像" width="300px" height="auto">
+<div id="view">
 
-    <div id="present">
-        <img id="present_fall" src="images/otanjoubi_birthday_present_balloon.png" alt="サンタが落としたプレゼントの画像"
-             width="125px" height="auto">
+    <div id="page1">
+        <div id="kadoIn" onclick="openGift();">
+            <!-- Tombol Surat --><img src="images/kado.png" height="500px"/>
+        </div>
+        <p id="ket">Click vào đây để nhận quà chứ còn đợi gì nữa 😜</p>
     </div>
 
-    <img id="hanabi_utiage" src="images/hanabi_utiage.png" alt="打ちあがっている花火" width="50px" height="auto">
-    <img id="hanabi" src="images/hanabi.png" alt="花火の画像">
-    <img id="yama" src="images/yama.png" alt="火山の画像" width="500px" height="auto">
-    <img id="kemuri" src="images/kemuri.png" alt="火山の画像" width="175px" height="auto">
 
-    <h1 id="text" style="display: none">Merry Christmas</h1>
+    <div id="page2" style="display: none">
+        <img id="start" class="button" onclick="startstop();" src="images/kanban_start.png" alt="ストップ，スタートボタン">
+        <img id="stop" class="button" onclick="startstop();" src="images/kanban_stop.png" alt="ストップ，スタートボタン">
+        <img id="santa" src="images/christmas_santa_sori.png" alt="飛んでいるサンタの画像" width="300px" height="auto">
+
+        <div id="present">
+            <img id="present_fall" src="images/otanjoubi_birthday_present_balloon.png" alt="サンタが落としたプレゼントの画像"
+                 width="125px" height="auto">
+        </div>
+
+        <img id="hanabi_utiage" src="images/hanabi_utiage.png" alt="打ちあがっている花火" width="50px" height="auto">
+        <img id="hanabi" src="images/hanabi.png" alt="花火の画像">
+        <img id="yama" src="images/yama.png" alt="火山の画像" width="500px" height="auto">
+        <img id="kemuri" src="images/kemuri.png" alt="火山の画像" width="175px" height="auto">
+
+        <h1 id="text" style="display: none">Merry Christmas</h1>
+
+
+    </div>
+
+
 </div>
 </body>
 </html>
